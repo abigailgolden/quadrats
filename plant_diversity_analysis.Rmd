@@ -14,6 +14,9 @@ library(expss)
 
 div <- read.csv("plant_diversity_clean.csv", header = TRUE)
 
+
+bio <- read.csv("biomass_clean.csv", header = TRUE)
+
 ```
 
 ```{r}
@@ -81,6 +84,29 @@ var.test(es_sum$spp, es_hay$spp)
 var.test(es_win$spp, es_hay$spp)
 
 var.test(es_sum$spp, eu_sum$spp)
+
+```
+
+
+```{r}
+
+# How about significant differences in avg quadrat biomass btwn pastures?
+
+
+bio_sum <- bio %>% 
+  filter(location == "egsel" & pasture == "summer")
+
+
+bio_win <- bio %>% 
+  filter(location == "egsel" & pasture == "winter")
+
+bio_hay <- bio %>% 
+  filter(location == "egsel" & pasture == "hay")
+
+
+t.test(bio_sum$mass_g, bio_win$mass_g)
+t.test(bio_sum$mass_g, bio_hay$mass_g)
+t.test(bio_win$mass_g, bio_hay$mass_g)
 
 ```
 
