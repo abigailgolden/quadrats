@@ -10,6 +10,7 @@ Try executing this chunk by clicking the *Run* button within the chunk or by pla
 ```{r setup}
 
 library(tidyverse)
+library(expss)
 
 div <- read.csv("plant_diversity_clean.csv", header = TRUE)
 
@@ -20,17 +21,61 @@ div <- read.csv("plant_diversity_clean.csv", header = TRUE)
 # create new objects
 
 es_sum <- div %>% 
-  filter(location == "egsel" & pasture == "summer")
+  filter(location == "egsel" & pasture == "summer") %>% 
+  group_by(quadrat) %>% 
+  summarize(spp = n_distinct(species))
 
 es_win <- div %>% 
-  filter(location == "egsel" & pasture == "winter")
+  filter(location == "egsel" & pasture == "winter")%>% 
+  group_by(quadrat) %>% 
+  summarize(spp = n_distinct(species))
 
 es_hay <- div %>% 
-  filter(location == "egsel" & pasture == "hay")
+  filter(location == "egsel" & pasture == "hay")%>% 
+  group_by(quadrat) %>% 
+  summarize(spp = n_distinct(species))
 
 eu_sum <- div %>% 
-  filter(location == "eguur" & pasture == "summer")
+  filter(location == "eguur" & pasture == "summer")%>% 
+  group_by(quadrat) %>% 
+  summarize(spp = n_distinct(species))
 
+
+```
+
+
+```{r}
+
+## write code to extract number of quadrats a particular species is found in
+## grouped by pasture
+## for Emily
+
+p1_pres <- div %>% 
+  filter(location != "eguur") %>% 
+  group_by(pasture) %>%
+  count_row_if(P1, div$species)
+
+
+
+```
+
+```{r}
+
+t.test(es_sum$spp, es_win$spp)
+
+t.test(es_sum$spp, es_hay$spp)
+
+t.test(es_hay$spp, es_win$spp)
+
+t.test(es_sum$spp, eu_sum$spp)
+
+var.test(es_sum$spp, es_win$spp)
+
+var.test(es_sum$spp, es_hay$spp)
+
+var.test(es_win$spp, es_hay$spp)
+
+var.test(es_sum$spp, eu_sum$spp)
 
 ```
 
