@@ -50,16 +50,19 @@ eu_sum <- div %>%
 ## grouped by pasture
 ## for Emily
 
-p1_pres <- div %>% 
+g1_pres <- div %>% 
   filter(location != "eguur") %>% 
-  group_by(pasture) %>%
-  count_row_if(P1, div$species)
+  filter(species == "G1") %>% 
+  group_by(pasture, quadrat) %>% 
+  summarize(count = n())
 
 
 
 ```
 
 ```{r}
+
+# test whether mean number of species differs btwn pastures
 
 t.test(es_sum$spp, es_win$spp)
 
@@ -68,6 +71,8 @@ t.test(es_sum$spp, es_hay$spp)
 t.test(es_hay$spp, es_win$spp)
 
 t.test(es_sum$spp, eu_sum$spp)
+
+# test whether variance in number of species per quadrat differs btwn pastures
 
 var.test(es_sum$spp, es_win$spp)
 
